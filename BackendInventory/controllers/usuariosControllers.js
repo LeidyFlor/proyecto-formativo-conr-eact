@@ -5,8 +5,7 @@ export const nuevoUsuario = async(req, res, next) =>{
         const usuario = await usuarios.create(req.body)
         res.status(201).json({mensaje: "Usuario creado", usuario})
     } catch (error) {
-        res.status(400).json({error: error.message})
-        
+      res.status(400).json({ error: error.message });
     }
 };
 

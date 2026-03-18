@@ -20,6 +20,16 @@ import {
     eliminarMaterial
 } from '../controllers/materialesControllers.js';
 
+// import {
+//     nuevoMaterial,
+//     consultarMateriales,
+//     consultarMaterialesDevolutivos,
+//     consultarMaterialesNoDevolutivos,
+//     consultarMaterial,
+//     actualizarMaterial,
+//     eliminarMaterial
+// } from '../controllers/materialesControllers.js';
+
 
 
 

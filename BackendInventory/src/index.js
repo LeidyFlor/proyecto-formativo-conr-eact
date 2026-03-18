@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import routes from "../routes/routes.js";
+import cors from 'cors';
 
 const app = express();//Ejecutar express
 
@@ -16,10 +17,15 @@ mongoose.connect('mongodb://0.0.0.0:27017/inventario')
     console.error('Error al conectar la bd MongoDB', err);
 });
 
+// 👇 Esto debe ir ANTES de tus rutas
+app.use(cors({
+    origin: 'http://localhost:3000' // solo permite peticiones desde el frontend
+}));
+
 // Permite que Express lea datos en formato JSON enviado en las peticiones
 app.use(express.json());
 
-app.use("/", routes);
+app.use("/api", routes);
 
 
 // app.get("/", (req, res) => {

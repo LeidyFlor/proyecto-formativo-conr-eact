@@ -16,6 +16,7 @@
   "author": " Miller Guerrero, Estefania Herrera, Leidy Marcela Flor",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "mongoose": "^9.2.4",
     "multer": "^2.1.1",

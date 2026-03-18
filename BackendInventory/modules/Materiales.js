@@ -13,9 +13,9 @@ const materialSchema = new Schema({
         type: String, 
         trim: true 
     },
-    correoPersonal: { 
-        type: String, 
-        trim: true 
+    cuentadante: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Usuarios'
     },
     descripcion: { 
         type: String, 
@@ -45,17 +45,17 @@ const materialSchema = new Schema({
     //ID de la marca del material
     marca: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Marca'
+        ref: 'Marcas'
     },
     imagen: { 
         type: String, 
         trim: true 
 
     },
+    //La fecha debe ser automatica
     fechaCreacion: { 
         type: Date, 
         trim: true 
-
     },
     // Este campo indica qué tipo de material es
 }, { discriminatorKey: "tipoMaterial"});

@@ -6,6 +6,10 @@ const Schema = mongoose.Schema//Guarda en la variable Schema la clase Schema de 
 const usuarioSchema = new Schema({
 
     //Campos donde se guardaran los datos del usuario
+    nombre: {
+        type: String,
+        trim: true //campos del nombre
+    },
     tipoDocumento: {
         type: String,
         trim: true //Elimina los espacios en blanco al inicio

@@ -1,0 +1,25 @@
+{
+  "name": "backendinventory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "server": "nodemon src/index.js"
+  },
+  "keywords": [
+    "MicroService",
+    "Mysql",
+    "Express js",
+    "Mongoose"
+  ],
+  "author": " Miller Guerrero, Estefania Herrera, Leidy Marcela Flor",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.4",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14"
+  }
+}

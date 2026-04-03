@@ -10,17 +10,19 @@ const usuarioSchema = new Schema({
         type: String,
         trim: true //campos del nombre
     },
-    tipoDocumento: {
-        type: String,
-        trim: true //Elimina los espacios en blanco al inicio
+    id_tipo_documento: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Tipo_Documento',
+        required: true
     },
     numDocumento: {
         type: Number,
         trim: true
     },
-    tipoUsuario: {
-        type: String,
-        trim: true,
+    id_tipo_usuario: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Tipo_Usuario',
+        required: true
     },
     estado: {
         type: String,
@@ -43,11 +45,11 @@ const usuarioSchema = new Schema({
         type: String,
         trim: true
     },
-    direccion: {
+    telefonoDos: {
         type: String,
         trim: true
     },
-    telefonoDos: {
+    direccion: {
         type: String,
         trim: true
     },

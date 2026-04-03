@@ -76,7 +76,7 @@ export const habilitarMarca = async (req, res) => {
         if(!marca) return res.status(404).json({error: "Marca no encontrada"});
 
         res.json({
-            mensaje: "marca habilitado",
+            mensaje: "Marca habilitado",
             usuario
         });
 
@@ -85,7 +85,7 @@ export const habilitarMarca = async (req, res) => {
     }
 };
 
-export const eliminarmarca = async (req, res) =>{
+export const eliminarMarca = async (req, res) =>{
     try {
         const eliminado = await marcas.findByIdAndDelete(req.params.id, req.body);
         if(!eliminado) return res.status(404).json({error: 'Marca no encontrada'});

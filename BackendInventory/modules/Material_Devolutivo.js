@@ -16,10 +16,10 @@ const materialesdevolutivosSchema = new Schema({
         type: String, 
         trim: true 
     },
-    categoria: { 
-        type: String, 
-        enum: ['Muebles y enseres', 'Maquinaria'],
-        trim: true 
+    categoria: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Categorias',
+        required: true
     },
     dimensiones: { 
         type: String, 

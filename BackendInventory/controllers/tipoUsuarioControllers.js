@@ -76,7 +76,7 @@ export const habilitarTipoUsuario = async (req, res) => {
 
         res.json({
             mensaje: "Tipo de usuario habilitado",
-            usuario
+            tipousuario
         });
 
     } catch (error) {

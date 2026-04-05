@@ -56,7 +56,7 @@ export const nuevoPrestamo = async(req, res) => {
 export const consultarPrestamos = async(req, res) => {
     try {
         const prestamo = await prestamos.find()
-            // populate es un método de Mongoose que permite que se vea toda la informacion de el modulo de material y material devolutivo y no solo que se permita ver el ID
+            // populate es un método de Mongoose que permite que se vea toda la informacion del modulo de material y material devolutivo y no solo que se permita ver el ID
             .populate('id_material')
             .populate('id_material_devolutivo');
         res.json(prestamo);

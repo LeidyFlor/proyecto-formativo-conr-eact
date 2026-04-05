@@ -20,4 +20,4 @@ const retornarPrestamoSchema = new Schema({
 
 });
 
-export default mongoose.model('RetornarPrestamos', retornarPrestamoSchema);
+export default mongoose.model('RetornarPrestamo', retornarPrestamoSchema);

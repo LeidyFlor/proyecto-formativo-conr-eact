@@ -96,13 +96,14 @@ function NuevoMaterialConsumo() {
   // Retorna true si hay algún campo vacío (deshabilita el botón),
   // false si todo está lleno (habilita el botón)
   const validarFormulario = () => {
-    const { nombreElemento, estado, cantidad, valorUnitario, marca } = material;
+    const { nombreElemento, estado, cantidad, valorUnitario, marca, cuentadante } = material;
     return (
       !nombreElemento.length ||
       !estado.length ||
-      !cantidad.length ||
-      !valorUnitario.length ||
-      !marca.length
+      !String(cantidad).length ||
+      !String(valorUnitario).length ||
+      !marca.length ||
+      !cuentadante.length
     );
   };
 
@@ -216,7 +217,7 @@ function NuevoMaterialConsumo() {
             {/* Las marcas guardadas en la bd */}
             {marcas.map((marca) => (
               <option key={marca._id} value={marca._id}>
-                {marca.nombre}
+                {marca.nombre_marca}
               </option>
             ))}
           </select>

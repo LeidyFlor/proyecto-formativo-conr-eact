@@ -123,17 +123,19 @@ function NuevoMaterialDevolutivo() {
       estado,
       cantidad,
       valorUnitario,
-      marca,
+      id_marca,
       serial,
       modelo,
       categoria,
+      cuentadante
     } = material;
     return (
       !nombreElemento.length ||
       !estado.length ||
-      !cantidad.length ||
-      !valorUnitario.length ||
-      !marca.length ||
+      !String(cantidad).length ||
+      !String(valorUnitario).length ||
+      !id_marca.length ||
+      !cuentadante.length ||
       !serial.length || // Obligatorio en devolutivos
       !modelo.length || // Obligatorio en devolutivos
       !categoria.length // Obligatorio en devolutivos — también es el discriminador visual
@@ -251,7 +253,7 @@ function NuevoMaterialDevolutivo() {
             {/* Iteramos las marcas que llegaron del backend */}
             {marcas.map((marca) => (
               <option key={marca._id} value={marca._id}>
-                {marca.nombre}
+                {marca.nombre_marca}
               </option>
             ))}
           </select>
@@ -307,7 +309,7 @@ function NuevoMaterialDevolutivo() {
             {/* categorías de la bd */}
             {categorias.map((categoria) => (
               <option key={categoria._id} value={categoria._id}>
-                {categoria.nombre}
+                {categoria.nombre_categoria}
               </option>
             ))}
           </select>

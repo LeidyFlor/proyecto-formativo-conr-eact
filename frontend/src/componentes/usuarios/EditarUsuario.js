@@ -13,9 +13,9 @@ function EditarUsuario() {
   // Estado con los datos del usuario. Empieza vacío y luego se llena con los datos de la API
   const [usuario, guardarUsuario] = useState({
     nombre: "",
-    tipoDocumento: "",
+    id_tipo_documento: "", //apunta al modelo de tipo documento
     numDocumento: "",
-    tipoUsuario: "",
+    id_tipo_usuario: "", //apunta al modelo de tipo de usuario
     estado: "",
     fechaInicio: "",
     fechaFin: "",
@@ -25,6 +25,11 @@ function EditarUsuario() {
     telefonoDos: "",
     emailInstitucional: "",
   });
+  // Estado para almacenar la lista de tipos de documento que llega del backend
+  const [tiposDocumento, guardarTiposDocumento] = useState([]);
+
+  // Estado para almacenar la lista de tipos de usuario que llega del backend
+  const [tiposUsuario, guardarTiposUsuario] = useState([]);
 
   // Al cargar el componente, consultamos la API para traer los datos actuales del usuario
   useEffect(() => {
@@ -32,23 +37,55 @@ function EditarUsuario() {
       const resultado = await inventarioAxios.get(`/usuarios/${id}`);
       // Llenamos el formulario con los datos que ya tiene el usuario
       // Guardamos los datos pero limpiando las fechas para que el input las entienda
-      // MongoDB envía "2025-04-12T00:00:00.000Z" y necesitamos solo "2025-04-12"
+      // MongoDB envía fecha y time stamps y necesitamos solo AAAA-MM-DD
       guardarUsuario({
         ...resultado.data,
-        fechaInicio: resultado.data.fechaInicio ? resultado.data.fechaInicio.substring(0, 10) : "",
-        fechaFin: resultado.data.fechaFin ? resultado.data.fechaFin.substring(0, 10) : "",
+        fechaInicio: resultado.data.fechaInicio
+          ? resultado.data.fechaInicio.substring(0, 10)
+          : "",
+        fechaFin: resultado.data.fechaFin
+          ? resultado.data.fechaFin.substring(0, 10)
+          : "",
       });
     };
-    
+    // Consultamos los tipos de documento para el selector
+    const consultarTiposDocumento = () => {
+      inventarioAxios
+        .get("/tiposdocumentos")
+        .then((res) => guardarTiposDocumento(res.data))
+        .catch(() =>
+          Swal.fire(
+            "Error",
+            "No se pudieron cargar los tipos de documento",
+            "error",
+          ),
+        );
+    };
+
+    // Consultamos los tipos de usuario para el selector
+    const consultarTiposUsuario = () => {
+      inventarioAxios
+        .get("/tipousuarios")
+        .then((res) => guardarTiposUsuario(res.data))
+        .catch(() =>
+          Swal.fire(
+            "Error",
+            "No se pudieron cargar los tipos de usuario",
+            "error",
+          ),
+        );
+    };
+
     consultarUsuario();
-  }, []); // El [] significa que esto solo se ejecuta una vez, cuando carga la página
+    consultarTiposDocumento();
+    consultarTiposUsuario();
+  }, [id]); // El [] solo se ejecuta si la pagina cambia
 
   // Cada vez que el usuario cambia un campo del formulario, actualizamos el estado
   const actualizarState = (e) => {
     guardarUsuario({
       ...usuario, // Mantenemos todos los campos anteriores
       [e.target.name]: e.target.value, // Solo actualizamos el campo que cambió
-      
     });
   };
 
@@ -84,33 +121,29 @@ function EditarUsuario() {
   const validarFormulario = () => {
     const {
       nombre,
-      tipoDocumento,
+      id_tipo_documento,
       numDocumento,
-      tipoUsuario,
+      id_tipo_usuario,
       estado,
       fechaInicio,
       fechaFin,
       email,
       telefono,
       direccion,
-      telefonoDos,
-      emailInstitucional,
     } = usuario;
 
     // Si algún campo está vacío, retorna true → el botón queda deshabilitado. Los numeros no tienen length de campo, entonces se convierte a String antes de ser pasado por el .legth
     return (
       !nombre.length ||
-      !tipoDocumento.length ||
+      !id_tipo_documento.length ||
       !String(numDocumento).length ||
-      !tipoUsuario.length ||
+      !id_tipo_usuario.length ||
       !estado.length ||
       !fechaInicio.length ||
       !fechaFin.length ||
       !email.length ||
       !telefono.length ||
-      !direccion.length ||
-      !telefonoDos.length ||
-      !emailInstitucional.length
+      !direccion.length
     );
   };
 
@@ -132,19 +165,21 @@ function EditarUsuario() {
             onChange={actualizarState}
           />
         </div>
+        {/* se cargan los tipos de docuemnto existentes en la db */}
 
         <div className="campo">
           <label>Tipo de Documento:</label>
           <select
-            name="tipoDocumento"
-            value={usuario.tipoDocumento}
+            name="id_tipo_documento"
+            value={usuario.id_tipo_documento}
             onChange={actualizarState}
           >
             <option value="">-- Selecciona --</option>
-            <option value="CC">Cédula de Ciudadanía</option>
-            <option value="TI">Tarjeta de Identidad</option>
-            <option value="CE">Cédula de Extranjería</option>
-            <option value="PP">Pasaporte</option>
+            {tiposDocumento.map((tipo) => (
+              <option key={tipo._id} value={tipo._id}>
+                {tipo.nombre}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -158,18 +193,20 @@ function EditarUsuario() {
             onChange={actualizarState}
           />
         </div>
-
+        {/* se cargan los tipos de usuarios existentes en la db */}
         <div className="campo">
           <label>Tipo de Usuario:</label>
           <select
-            name="tipoUsuario"
-            value={usuario.tipoUsuario}
+            name="id_tipo_usuario"
+            value={usuario.id_tipo_usuario}
             onChange={actualizarState}
           >
             <option value="">-- Selecciona --</option>
-            <option value="admin">Administrador</option>
-            <option value="inst">Instructor</option>
-            <option value="inv">Invitado</option>
+            {tiposUsuario.map((tipo) => (
+              <option key={tipo._id} value={tipo._id}>
+                {tipo.nombre}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -260,7 +297,7 @@ function EditarUsuario() {
             onChange={actualizarState}
           />
         </div>
-
+            {/* cuando los campos obligatorios estan llenos se activa el boton de enviar */}
         <div className="enviar">
           <input
             type="submit"

@@ -7,7 +7,7 @@ function Usuarios(){
   const [usuarios, guardarUsuario] = useState([]); //Traer datos del usuario y al momento de hacer una peticion que modifique los datos
   const consultarAPI = async () => {
     const consultarUsuario = await inventarioAxios.get("/usuarios");
-    console.log(consultarUsuario.data);
+    // console.log(consultarUsuario.data);
 
     guardarUsuario(consultarUsuario.data);
   };

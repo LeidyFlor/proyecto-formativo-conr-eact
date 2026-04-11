@@ -1,17 +1,17 @@
 import { Fragment } from "react/jsx-runtime";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { inventarioAxios } from "../../config/axios.js"; // Para hacer consultas a la API, conecxion con el backend
 import Swal from "sweetalert2"; //Para mostrar alertas bonitas
 import { useNavigate } from "react-router-dom";
 
 function NuevoUsuario() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [usuario, guardarUsuario] = useState({
     // Estado para almacenar la información del nuevo usuario que se va a crear
     nombre: "",
-    tipoDocumento: "",
+    id_tipo_documento: "",
     numDocumento: "",
-    tipoUsuario: "",
+    id_tipo_usuario: "",
     estado: "",
     fechaInicio: "",
     fechaFin: "",
@@ -21,9 +21,39 @@ function NuevoUsuario() {
     telefonoDos: "",
     emailInstitucional: "",
   });
+  // Estado para almacenar la lista de tipos de documento que llega del backend
+  const [tipo_documento, guardarTiposDocumento] = useState([]);
 
+  // Estado para almacenar la lista de tipos de usuario que llega del backend
+  const [tipo_usuario, guardarTiposUsuario] = useState([]);
   // funcion para actualizar el estado del usuario a medida que este ingresa información al formulario
+  // Al montar el componente cargamos los tipos de documento y usuario
+  // para mostrarlos como opciones en los selectores
+  useEffect(() => {
+    // Consultamos los tipos de documento desde el backend
+    inventarioAxios
+      .get("/tiposdocumentos")
+      .then((res) => guardarTiposDocumento(res.data))
+      .catch(() =>
+        Swal.fire(
+          "Error",
+          "No se pudieron cargar los tipos de documento",
+          "error",
+        ),
+      );
 
+    // Consultamos los tipos de usuario desde el backend
+    inventarioAxios
+      .get("/tipousuarios")
+      .then((res) => guardarTiposUsuario(res.data))
+      .catch(() =>
+        Swal.fire(
+          "Error",
+          "No se pudieron cargar los tipos de usuario",
+          "error",
+        ),
+      );
+  }, []); // Array vacío: solo se ejecuta una vez al montar el componente
   const actualizarState = (e) => {
     guardarUsuario({
       ...usuario, // Usamos el operador spread para mantener los valores anteriores del usuario y solo actualizar el campo que ha cambiado
@@ -73,31 +103,27 @@ function NuevoUsuario() {
   const validarFormulario = () => {
     const {
       nombre,
-      tipoDocumento,
+      id_tipo_documento,
       numDocumento,
-      tipoUsuario,
+      id_tipo_usuario,
       estado,
       fechaInicio,
       fechaFin,
       email,
       telefono,
       direccion,
-      telefonoDos,
-      emailInstitucional,
     } = usuario;
     let valido =
       !nombre.length ||
-      !tipoDocumento.length ||
-      !numDocumento.length ||
-      !tipoUsuario.length ||
+      !id_tipo_documento.length ||
+      !String(numDocumento).length ||
+      !id_tipo_usuario.length ||
       !estado.length ||
       !fechaInicio.length ||
       !fechaFin.length ||
       !email.length ||
       !telefono.length ||
-      !direccion.length ||
-      !telefonoDos.length ||
-      !emailInstitucional.length; // Verificamos si alguno de los campos está vacío (si la longitud de alguno de los campos es 0)
+      !direccion.length; // Verificamos si alguno de los campos está vacío (si la longitud de alguno de los campos es 0)
 
     return valido; // Retornamos true si algún campo está vacío (lo que indica que el formulario no es válido) o false si todos los campos están llenos (lo que indica que el formulario es válido)
   };
@@ -121,17 +147,18 @@ function NuevoUsuario() {
         <div className="campo">
           <label>Tipo de Documento:</label>
           <select
-            name="tipoDocumento"
+            name="id_tipo_documento"
             onChange={actualizarState}
             defaultValue=""
           >
             <option value="" disabled>
               -- Selecciona --
             </option>
-            <option value="CC">Cédula de Ciudadanía</option>
-            <option value="TI">Tarjeta de Identidad</option>
-            <option value="CE">Cédula de Extranjería</option>
-            <option value="PP">Pasaporte</option>
+            {tipo_documento.map((tipo) => (
+              <option key={tipo._id} value={tipo._id}>
+                {tipo.tipo_documento}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -144,16 +171,22 @@ function NuevoUsuario() {
             onChange={actualizarState}
           />
         </div>
-
+        {/* se selecciona el id de las opciones de la bd */}
         <div className="campo">
           <label>Tipo de Usuario:</label>
-          <select name="tipoUsuario" onChange={actualizarState} defaultValue="">
+          <select
+            name="id_tipo_usuario"
+            onChange={actualizarState}
+            defaultValue=""
+          >
             <option value="" disabled>
               -- Selecciona --
             </option>
-            <option value="admin">Administrador</option>
-            <option value="inst">Instructor</option>
-            <option value="inv">Invitado</option>
+            {tipo_usuario.map((tipo) => (
+              <option key={tipo._id} value={tipo._id}>
+                {tipo.tipo_usuario}
+              </option>
+            ))}
           </select>
         </div>
 

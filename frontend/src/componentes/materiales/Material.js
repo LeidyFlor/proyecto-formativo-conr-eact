@@ -104,7 +104,7 @@ export function Material({ material, esDevolutivo }) {
                 <p>Modelo: {modelo ?? "Sin modelo"}</p>
                 {/* Categoría: si el backend hizo populate mostramos el nombre, si no el ID */}
                 <p>
-                  Categoría: {categoria?.nombre ?? categoria ?? "Sin categoría"}
+                  Categoría: {categoria?.nombre_categoria ?? categoria ?? "Sin categoría"}
                 </p>
                 {dimensiones && (
                   <p> Dimensiones: {dimensiones ?? "Sin dimensiones"}</p>
@@ -122,7 +122,7 @@ export function Material({ material, esDevolutivo }) {
             {/* Campos comunes a ambos tipos -------------------- */}
 
             {/* Marca: si el backend hizo populate mostramos el nombre, si no el ID */}
-            <p>Marca: {marca?.nombre ?? marca ?? "Sin marca"}</p>
+            <p>Marca: {marca?.nombre_marca ?? marca ?? "Sin marca"}</p>
 
             {/* Estado con color visual según disponibilidad */}
             <p
@@ -151,26 +151,13 @@ export function Material({ material, esDevolutivo }) {
 
           {/*Botones de acción -------------------- */}
           <div className="acciones">
-            {/* Ver detalle — ruta diferente según tipo */}
-            <Link to={`${rutaBase}/detalle/${_id}`} className="btn btn-azul">
-              <i className="fas fa-eye"></i>
-              Ver Detalle
-            </Link>
-
+      
             {/* Editar — ruta diferente según tipo */}
             <Link to={`${rutaBase}/editar/${_id}`} className="btn btn-azul">
               <i className="fas fa-pen-alt"></i>
               Editar Material
             </Link>
 
-            {/* Asignar cuentadante — ruta diferente según tipo 000000000000000000000000000000000000000000000000*/}
-            <Link
-              to={`${rutaBase}/asignar/${_id}`}
-              className="btn btn-amarillo"
-            >
-              <i className="fas fa-user-tag"></i>
-              Asignar Cuentadante
-            </Link>
 
             {/* Eliminar con confirmación */}
             <button

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { inventarioAxios } from "../../config/axios.js";
 import { Material } from "./Material.js";
 
-export function Materiales() {
+export default function Materiales() {
   // Lista completa de todos los materiales
   const [materiales, setMateriales] = useState([]);
 

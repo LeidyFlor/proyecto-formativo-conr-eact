@@ -3,7 +3,7 @@ import tiposdocumentos from "../modules/Tipo_Documento.js";
 export const nuevoTipoDocumento = async(req, res, next) =>{
     try {
         const tipodocumento = await tiposdocumentos.create(req.body)
-        res.status(201).json({mensaje: "Tipo de documento creado", tipodocumento})
+        res.status(201).json({mensaje: "Tipo de documento creado", usuario})
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -76,7 +76,7 @@ export const habilitarTipoDocumento = async (req, res) => {
 
         res.json({
             mensaje: "Tipo de documento habilitado",
-            tipodocumento
+            usuario
         });
 
     } catch (error) {

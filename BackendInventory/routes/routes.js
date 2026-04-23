@@ -151,11 +151,11 @@ router.delete('/prestamos/:id', eliminarPrestamo);
 
 // Retornar un prestamo
 // Crear retorno de préstamo
-router.post('/RetornarPrestamo', retornarPrestamo);
+router.post('/', retornarPrestamo);
 // Consultar todos los retornos
-router.get('/RetornarPrestamo', consultarRetornos);
+router.get('/', consultarRetornos);
 // Consultar retorno por ID
-router.get('/RetornarPrestamo/:id', consultarRetorno);
+router.get('/:id', consultarRetorno);
 
 // CRUD Tipos de Documento
 // Consultar todos los documentos

@@ -1,4 +1,4 @@
-import marcas from "../modules/Marcas.js";
+import usuarios from "../modules/Marcas.js";
 
 export const nuevaMarca = async(req, res, next) =>{
     try {
@@ -56,7 +56,7 @@ export const deshabilitarMarca = async (req, res) => {
 
         res.json({
             mensaje: "Marca deshabilitado",
-            marca
+            usuario
         });
 
     } catch (error) {
@@ -77,7 +77,7 @@ export const habilitarMarca = async (req, res) => {
 
         res.json({
             mensaje: "Marca habilitado",
-            marca
+            usuario
         });
 
     } catch (error) {

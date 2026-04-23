@@ -1,8 +1,17 @@
 import usuarios from "../modules/Usuarios.js";
+import bcrypt from "bcrypt"; // Importar bcrypt para cifrar el password
 
 export const nuevoUsuario = async(req, res, next) =>{
     try {
-        const usuario = await usuarios.create(req.body)
+        const datos = { ...req.body };
+
+        // Cifrar password antes de guardar si viene en el body
+        if (datos.password) {
+            const salt = await bcrypt.genSalt(10);
+            datos.password = await bcrypt.hash(datos.password, salt);
+        }
+
+        const usuario = await usuarios.create(datos)
         res.status(201).json({mensaje: "Usuario creado", usuario})
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -34,7 +43,15 @@ export const consultarUsuario = async(req, res, next) =>{
 
 export const actualizarUsuario = async(req, res) => {
     try {
-        const usuario = await usuarios.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true}); //new: devuelve el objeto actualizado,runValidator ejecuta la validacion del modelo
+        const datos = { ...req.body };
+
+        // Si mandan un nuevo password, cifrarlo antes de guardar
+        if (datos.password) {
+            const salt = await bcrypt.genSalt(10);
+            datos.password = await bcrypt.hash(datos.password, salt);
+        }
+
+        const usuario = await usuarios.findByIdAndUpdate(req.params.id, datos, {new: true, runValidators: true}); //new: devuelve el objeto actualizado,runValidator ejecuta la validacion del modelo
         if(!usuario) return res.status(404).json({error: 'Usuario no encontrado'});
         res.json({mensaje: 'Usuario Actualizado', usuario});
     } catch (error) {

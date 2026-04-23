@@ -1,4 +1,5 @@
 import mongoose from "mongoose";//Importar la libreria mongoose
+import bcrypt from "bcrypt"; // Importar bcrypt para cifrar el password
 
 const Schema = mongoose.Schema//Guarda en la variable Schema la clase Schema de mongoose
 
@@ -56,8 +57,23 @@ const usuarioSchema = new Schema({
     emailInstitucional: {
         type: String,
         trim: true
+    },
+
+    // Campo password — se guarda cifrado, nunca en texto plano
+    // select: false hace que nunca se incluya en las consultas por defecto
+    password: {
+        type: String,
+        required: true,
+        select: false
     }
 
 });
 
-export default mongoose.model('Usuarios', usuarioSchema);//Crea un modelo de monoose
+// Elimina el password del objeto antes de enviarlo como JSON, por seguridad
+usuarioSchema.methods.toJSON = function () {
+    const obj = this.toObject();
+    delete obj.password;
+    return obj;
+};
+
+export default mongoose.model('Usuarios', usuarioSchema);//Crea un modelo de mongoose
